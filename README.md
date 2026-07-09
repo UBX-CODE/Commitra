@@ -91,43 +91,9 @@ graph TD
 
 Commitra delivers a stunning, distraction-free interface right in your terminal. 
 
-```text
-Repository
-────────────────────────────────────────
-Branch       main
-Changes      6 files
-Staged       0
-Unstaged     6
-
-M  agent/commit_agent.py
-M  llm/prompts.py
-M  main.py
-
-[4/6] Analyzing semantic intent...
-[OK] Intent analyzed: Enhancements to Commitra's code analysis
-[5/6] Deciding strategy...
-[OK] Single logical commit recommended
-
-╭──────────────────── Proposed commit ────────────────────╮
-│                                                         │
-│  1  feat(Commitra): Enhance Commitra's code analysis    │
-│                                                         │
-│     • Added deterministic quality checks for subjects   │
-│     • Introduced a repository summary display           │
-│     • Updated the terminal UI with rich menus           │
-│                                                         │
-╰─────────────────────────────────────────────────────────╯
-
-What do you want to do?
-
-1. Approve commits
-2. Edit proposal
-3. Regenerate
-4. View changes
-5. Cancel
-
-Select [1/2/3/4/5]:
-```
+<div align="center">
+  <img src="docs/assets/terminal.png" alt="Commitra Terminal UI" width="100%" />
+</div>
 
 ---
 

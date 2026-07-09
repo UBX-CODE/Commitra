@@ -116,6 +116,7 @@ def prompt_edit_single(analysis: CommitAnalysis):
     
     if new_body.strip().lower() == "none":
         analysis.body = []
+        
     elif new_body != current_body:
         analysis.body = [p.strip() for p in new_body.split("|") if p.strip()]
 
