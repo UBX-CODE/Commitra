@@ -92,7 +92,9 @@ graph TD
 Commitra delivers a stunning, distraction-free interface right in your terminal. 
 
 <div align="center">
-  <img src="docs/assets/terminal.png" alt="Commitra Terminal UI" width="100%" />
+  <img src="docs/assets/terminal1.png" alt="Commitra Terminal UI" width="100%" />
+  <img src="docs/assets/terminal2.png" alt="Commitra Terminal UI" width="100%" />
+
 </div>
 
 ---
