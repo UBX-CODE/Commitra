@@ -6,7 +6,7 @@ from llm.client import LLMClient
 from ui.terminal import (
     display_banner, print_step, print_success, print_error, print_warning,
     display_single_proposal, display_multiple_proposal, prompt_approval,
-    prompt_edit_single, prompt_feedback, display_diff
+    prompt_edit_single, prompt_feedback, display_diff, display_repo_summary
 )
 
 class CommitAgent:
@@ -37,18 +37,32 @@ class CommitAgent:
         print_success("Staged and unstaged changes inspected")
         print_success("Recent commit history inspected")
         
+        display_repo_summary(repo_context)
+        
         # Step 4 & 5: Analyze and Decide
         print_step(4, 6, "Analyzing semantic intent...")
         
         feedback = None
+        analysis = None
         while True:
+            # LLM Analysis
             try:
                 analysis = self.llm_client.analyze_commits(repo_context, feedback)
-                print_success(f"Intent analyzed: {analysis.summary}")
             except Exception as e:
                 print_error(str(e))
                 print_error("AI analysis failed. No repository changes were modified.")
                 sys.exit(1)
+
+            # Quality Check
+            quality_error = self._run_quality_checks(analysis)
+            if quality_error and not feedback:
+                # First time quality check failure -> auto-regenerate with targeted feedback
+                print_warning(f"Quality check failed: {quality_error}. Retrying...")
+                feedback = f"Your previous response failed quality checks: {quality_error}. Please improve it by being specific and concrete."
+                continue
+            
+            # If we pass or already retried once, break and show proposal
+            print_success(f"Intent analyzed: {analysis.summary}")
             
             print_step(5, 6, "Deciding strategy...")
             if analysis.strategy == "multiple":
@@ -87,6 +101,33 @@ class CommitAgent:
                 elif action == "A":
                     self._execute_approved(analysis)
                     sys.exit(0)
+            
+            if action == "R":
+                continue # loop outer
+
+    def _run_quality_checks(self, analysis) -> str | None:
+        vague_phrases = ["update code", "make changes", "fix stuff", "improve user experience", 
+                         "update configuration settings", "update terminal ui", "minor fixes", "refactor interactive workflow"]
+        
+        def check_text(text: str) -> str | None:
+            if not text: return None
+            text_lower = text.lower()
+            for phrase in vague_phrases:
+                if phrase in text_lower:
+                    return f"Contains vague phrase '{phrase}'"
+            return None
+
+        if analysis.strategy == "single":
+            if err := check_text(analysis.subject): return err
+            if err := check_text(analysis.intent): return err
+            if analysis.body and any(analysis.subject.strip().lower() == b.strip().lower() for b in analysis.body):
+                return "Body repeats subject verbatim."
+        else:
+            for g in analysis.groups:
+                if err := check_text(g.subject): return err
+                if g.body and any(g.subject.strip().lower() == b.strip().lower() for b in g.body):
+                    return f"Body repeats subject verbatim in commit: {g.subject}"
+        return None
 
     def _execute_approved(self, analysis):
         if analysis.strategy == "single":

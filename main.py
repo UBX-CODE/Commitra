@@ -1,13 +1,14 @@
 import typer
 from agent.commit_agent import CommitAgent
 
-app = typer.Typer(help="Commitra: Agentic AI Git Commit CLI")
+app = typer.Typer(help="Commitra: Agentic AI Git Commit CLI", invoke_without_command=True)
 
-@app.command()
-def main():
+@app.callback(invoke_without_command=True)
+def main(ctx: typer.Context):
     """Run the interactive Agentic AI Git commit workflow."""
-    agent = CommitAgent()
-    agent.run()
+    if ctx.invoked_subcommand is None:
+        agent = CommitAgent()
+        agent.run()
 
 @app.command()
 def analyze():

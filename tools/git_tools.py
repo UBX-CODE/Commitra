@@ -143,3 +143,46 @@ def execute_commit(files: List[str], subject: str, body: List[str]) -> str:
     
     # Verify and return hash/message
     return run_git_command(["log", "-1", "--pretty=format:%H%n%s"])
+
+def get_file_diff(filepath: str, max_chars: int = config.MAX_DIFF_CHARS) -> str:
+    if is_file_sensitive(filepath):
+        return "Diff hidden for sensitive file."
+
+    staged_diff = run_git_command(["diff", "--cached", "--", filepath])
+    unstaged_diff = run_git_command(["diff", "--", filepath])
+    
+    diff_text = ""
+    if staged_diff:
+        diff_text += f"--- STAGED ---\n{staged_diff}\n"
+    if unstaged_diff:
+        diff_text += f"--- UNSTAGED ---\n{unstaged_diff}\n"
+        
+    if not diff_text:
+        return "No diff available."
+        
+    if len(diff_text) > max_chars:
+        return diff_text[:max_chars] + f"\n\n... [DIFF TRUNCATED: Exceeded {max_chars} characters] ..."
+    return diff_text
+
+def get_diff_stats() -> dict[str, dict[str, int]]:
+    stats = {}
+    
+    def parse_numstat(output: str):
+        for line in output.splitlines():
+            parts = line.split("\t")
+            if len(parts) == 3:
+                added, removed, path = parts
+                if path not in stats:
+                    stats[path] = {"added": 0, "removed": 0}
+                if added != "-":
+                    stats[path]["added"] += int(added)
+                if removed != "-":
+                    stats[path]["removed"] += int(removed)
+
+    staged_output = run_git_command(["diff", "--cached", "--numstat"])
+    unstaged_output = run_git_command(["diff", "--numstat"])
+    
+    parse_numstat(staged_output)
+    parse_numstat(unstaged_output)
+    
+    return stats
