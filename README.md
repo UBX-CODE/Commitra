@@ -1,4 +1,5 @@
 <div align="center">
+  <img src="docs/assets/logo.png" alt="Commitra Logo" width="150" />
   <h1>Commitra</h1>
   Agentic AI Git Commit CLI
   <br>
