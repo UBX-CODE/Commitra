@@ -1,14 +1,8 @@
 <div align="center">
-  <img src="docs/assets/banner.png" alt="Commitra Banner" width="100%" />
+  <h1>Commitra</h1>
+  Agentic AI Git Commit CLI
+  <br>
 
-  # Commitra
-  **Agentic AI Git Commit CLI**
-  
-  <p>
-    <img src="https://img.shields.io/badge/Python-3.11+-blue.svg?style=for-the-badge&logo=python" alt="Python 3.11+" />
-    <img src="https://img.shields.io/badge/Status-Active-success.svg?style=for-the-badge" alt="Status Active" />
-    <img src="https://img.shields.io/badge/CLI-Typer-red.svg?style=for-the-badge&logo=typer" alt="CLI Typer" />
-  </p>
   <p>
     <em>Intelligently analyze repository changes and create meaningful, context-aware Git commits through an agentic workflow.</em>
   </p>
@@ -16,7 +10,7 @@
 
 ---
 
-## 🚀 The Problem
+##  The Problem
 
 Creating high-quality, descriptive Git commits is often treated as an afterthought. Standard AI wrappers usually just pipe `git diff` to an LLM, which:
 - Ignores broad repository context
@@ -29,7 +23,7 @@ Creating high-quality, descriptive Git commits is often treated as an afterthoug
 
 ---
 
-## 🧠 Why Agentic AI?
+##  Why Agentic AI?
 
 Commitra acts autonomously but safely. It follows a rigorous workflow before touching your repository:
 
@@ -39,7 +33,7 @@ It inspects the state of the repository, uses deterministic tools to pull safe d
 
 ---
 
-## ✨ Features
+##  Features
 
 - **Semantic Grouping**: Commitra groups your changes into multiple logical commits based on concern, not just file boundaries.
 - **Interactive Diff Viewer**: A built-in, file-first `+X -Y` interactive diff viewer so you can inspect exactly what the AI is proposing.
@@ -50,7 +44,7 @@ It inspects the state of the repository, uses deterministic tools to pull safe d
 
 ---
 
-## 🏗️ Architecture Flow
+##  Architecture Flow
 
 ```mermaid
 graph TD
@@ -86,8 +80,7 @@ graph TD
 ```
 
 ---
-
-## 💻 Terminal Experience
+##  Terminal Experience
 
 Commitra delivers a stunning, distraction-free interface right in your terminal. 
 
@@ -99,7 +92,7 @@ Commitra delivers a stunning, distraction-free interface right in your terminal.
 
 ---
 
-## ⚙️ Installation
+##  Installation
 
 1. **Clone the repository:**
    ```bash
@@ -124,7 +117,7 @@ Commitra delivers a stunning, distraction-free interface right in your terminal.
 
 ---
 
-## 🔑 Configuration
+##  Configuration
 
 Copy the example environment file to `.env`:
 ```bash
@@ -141,7 +134,7 @@ RECENT_COMMIT_COUNT=5
 
 ---
 
-## 🛠️ Usage
+##  Usage
 
 To launch the Agent, simply navigate to your modified Git repository and run:
 
@@ -153,7 +146,7 @@ Commitra will automatically analyze the diff, apply semantic grouping, and gener
 
 ---
 
-## 🛡️ Safety Guarantees
+##  Safety Guarantees
 
 Commitra is designed to never perform destructive actions blindly.
 
@@ -164,6 +157,3 @@ Commitra is designed to never perform destructive actions blindly.
 
 ---
 
-<div align="center">
-  <i>Built for developers who value their commit history.</i>
-</div>
