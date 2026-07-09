@@ -13,6 +13,8 @@ def run_git_command(args: list[str]) -> str:
         ["git", *args],
         capture_output=True,
         text=True,
+        encoding="utf-8",
+        errors="replace",
         check=False
     )
     if result.returncode != 0:
@@ -46,15 +48,15 @@ def get_changed_files() -> List[ChangedFile]:
 
     changed_files = []
     for line in status_output.splitlines():
-        if len(line) < 4:
+        if len(line) < 3:
             continue
         
         status_code = line[0:2]
-        filepath = line[3:].strip()
+        filepath = line[2:].strip().strip('"')
         
         # Handle renames (e.g., R  old -> new)
         if "->" in filepath:
-            filepath = filepath.split("->")[-1].strip()
+            filepath = filepath.split("->")[-1].strip().strip('"')
 
         # X is staged, Y is unstaged
         # Index status is line[0], Working tree status is line[1]
